@@ -1890,8 +1890,8 @@ and who knows, just like many others, you might even start enjoying it.</p>
           <div class="form-header">
             <h2>Let's get to know each other</h2>
           </div>
-          <form class="form" action="#" method="POST">
-            <input type="hidden" name="formulier" value="intake">
+          <form class="form" action="https://hooks.zapier.com/hooks/catch/16872475/ugntte5/" method="POST">
+            <input type="hidden" name="form_name" value="intake">
             <div class="form-group">
   <label style="font-weight:normal;">
     <div style="color:var(--muted);margin-bottom:8px;font-weight:normal;">At Healthy Habits, we do things a little differently.</div>
@@ -2406,82 +2406,6 @@ and who knows, just like many others, you might even start enjoying it.</p>
       }
     })();
 
-    // Zapier form handler - werkt voor alle formulieren op de pagina
-    (function(){
-      const ZAPIER_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/16872475/ugntte5/';
-      
-      // Functie om melding te tonen
-      function showMessage(form, message, isSuccess){
-        // Verwijder bestaande meldingen
-        const existingMessage = form.parentElement.querySelector('.form-message');
-        if(existingMessage){
-          existingMessage.remove();
-        }
-        
-        // Maak nieuwe melding
-        const messageEl = document.createElement('div');
-        messageEl.className = 'form-message ' + (isSuccess ? 'form-success-message' : 'form-error-message') + ' show';
-        messageEl.textContent = message;
-        
-        // Voeg toe na het formulier of binnen de form-container
-        const formContainer = form.closest('.form-container') || form.parentElement;
-        if(formContainer){
-          formContainer.appendChild(messageEl);
-        }
-        
-        // Scroll naar melding
-        setTimeout(() => {
-          messageEl.scrollIntoView({behavior: 'smooth', block: 'nearest'});
-        }, 100);
-      }
-      
-      // Voeg event listeners toe aan alle formulieren
-      document.querySelectorAll('form').forEach(function(form){
-        form.addEventListener('submit', async function(e){
-          e.preventDefault();
-          
-          const submitButton = form.querySelector('button[type="submit"]');
-          const originalButtonText = submitButton ? submitButton.textContent : '';
-          
-          // Disable submit button tijdens verzenden
-          if(submitButton){
-            submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-          }
-          
-          try{
-            // Maak FormData van het formulier
-            const formData = new FormData(form);
-            
-            // Voeg page en timestamp toe
-            formData.append('page', window.location.pathname);
-            formData.append('timestamp', new Date().toISOString());
-            
-            // Verstuur FormData naar Zapier
-            const response = await fetch(ZAPIER_WEBHOOK, {
-              method: 'POST',
-              body: formData
-            });
-            
-            if(response.ok){
-              showMessage(form, 'Thank you! Your message has been sent. We will contact you as soon as possible.', true);
-              form.reset();
-            } else {
-              throw new Error('Server response was not ok');
-            }
-          } catch(error){
-            console.error('Form submission error:', error);
-            showMessage(form, 'An error occurred while sending. Please try again later.', false);
-          } finally{
-            // Herstel submit button
-            if(submitButton){
-              submitButton.disabled = false;
-              submitButton.textContent = originalButtonText;
-            }
-          }
-        });
-      });
-    })();
   </script>
 
 </body>
